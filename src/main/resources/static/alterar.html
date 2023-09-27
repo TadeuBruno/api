@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alterar Produto</title>
+</head>
+<body>
+<h1>Alterar Produto</h1>
+<label for="productId">Product ID:</label>
+<input type="number" id="productId" required><br><br>
+
+<label for="newNome">New Name:</label>
+<input type="text" id="newNome" required><br><br>
+
+<label for="newDescricao">New Description:</label>
+<textarea id="newDescricao" required></textarea><br><br>
+
+<label for="newPreco">New Price:</label>
+<input type="number" step="0.01" id="newPreco" required><br><br>
+
+<label for="newQuantidade">New Quantity:</label>
+<input type="number" id="newQuantidade" required><br><br>
+
+<button id="updateButton">Alterar</button>
+
+<script>
+    const updateButton = document.getElementById("updateButton");
+
+    updateButton.addEventListener("click", () => {
+        const productId = document.getElementById("productId").value;
+        const newNome = document.getElementById("newNome").value;
+        const newDescricao = document.getElementById("newDescricao").value;
+        const newPreco = parseFloat(document.getElementById("newPreco").value);
+        const newQuantidade = parseInt(document.getElementById("newQuantidade").value);
+
+        if (productId.trim() !== "" && newNome.trim() !== "" && newDescricao.trim() !== "" && !isNaN(newPreco) && !isNaN(newQuantidade)) {
+            const updatedProduct = {
+                nome: newNome,
+                descricao: newDescricao,
+                preco: newPreco,
+                quantidadeestoque: newQuantidade
+            };
+
+            updateProduct(productId, updatedProduct);
+        }
+    });
+
+    function updateProduct(productId, updatedProduct) {
+        const url = `/api/produtos/atualizar/${productId}`;
+
+        fetch(url, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedProduct)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("Produto alterado com sucesso!");
+                } else {
+                    alert("Erro ao alterar o produto.");
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao alterar o produto:", error);
+            });
+    }
+</script>
+</body>
+</html>

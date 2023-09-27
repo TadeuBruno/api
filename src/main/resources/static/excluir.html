@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Excluir Produto</title>
+</head>
+<body>
+<h1>Excluir Produto</h1>
+<label for="productId">Product ID:</label>
+<input type="number" id="productId" required>
+<button id="deleteButton">Excluir</button>
+
+<script>
+    const deleteButton = document.getElementById("deleteButton");
+
+    deleteButton.addEventListener("click", () => {
+        const productId = document.getElementById("productId").value;
+
+        if (productId.trim() !== "") {
+            deleteProduct(productId);
+        }
+    });
+
+    function deleteProduct(productId) {
+        const url = `/api/produtos/excluir/${productId}`;
+
+        fetch(url, {
+            method: "DELETE",
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("Produto excluído com sucesso!");
+                } else {
+                    alert("Erro ao excluir o produto.");
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao excluir o produto:", error);
+            });
+    }
+</script>
+</body>
+</html>
+ 
